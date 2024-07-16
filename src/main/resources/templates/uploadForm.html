@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>File Hashing</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+    <link th:href="@{/uploadForm.css}" rel="stylesheet">
+</head>
+
+<body>
+    <div class = "col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+        <h3>File Hashing</h3>
+
+        <form method="POST" enctype="multipart/form-data" action="/">
+            <table>
+                <tr>
+                    <td>File to upload:</td>
+                    <td><input type="file" name="file" /></td>
+                </tr>
+                <tr>
+                    <td><input type="submit" value="Upload" /></td>
+                </tr>
+            </table>
+        </form>
+
+        <form id="result" th:object="${hash}">
+            <div class ="form-group">
+                <label> Md5 hash </label>
+                <label>
+                    <input
+                            type = "text"
+                            name = "Md5 hash"
+                            th:field = "*{md5}"
+                            class = "form-control"
+                            placeholder="Md5 hash"
+                            readonly
+                    />
+                </label>
+            </div>
+
+            <div class ="form-group">
+                <label> Sha256 hash </label>
+                <label>
+                    <input
+                            type = "text"
+                            name = "Sha256 hash"
+                            th:field = "*{sha256}"
+                            class = "form-control"
+                            placeholder="Sha256 hash"
+                            readonly
+                    />
+                </label>
+            </div>
+
+            <div class ="form-group">
+                <label> Sha512 hash </label>
+                <label>
+                    <input
+                            type = "text"
+                            name = "Sha512 hash"
+                            th:field = "*{sha512}"
+                            class = "form-control"
+                            placeholder="Sha512 hash"
+                            readonly
+                    />
+                </label>
+            </div>
+
+            <div style="color: red" th:if="${not #strings.isEmpty(error)}" th:text="${error}"></div>
+        </form>
+    </div>
+</body>
+
+</html>
