@@ -8,8 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.annotation.DirtiesContext;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -23,15 +24,15 @@ public class FileHashingServiceTest {
     private FileHashingService fileHashingService;
 
     @Value("classpath:text.txt")
-    private InputStream textFile;
+    private File textFile;
 
     @Value("classpath:image.png")
-    private InputStream imageFile;
+    private File imageFile;
 
     @Test
     public void hashing() throws IOException {
-        var textHashResult = fileHashingService.hashing(new MockMultipartFile("text", textFile));
-        var imageHashResult = fileHashingService.hashing(new MockMultipartFile("image", imageFile));
+        var textHashResult = fileHashingService.hashing(new MockMultipartFile("text", new FileInputStream(textFile)));
+        var imageHashResult = fileHashingService.hashing(new MockMultipartFile("image", new FileInputStream(imageFile)));
 
         FileHash textHash = new FileHash();
         textHash.setMd5("04598740935cc6bb2f31e9ac1bb82661");
@@ -52,17 +53,14 @@ public class FileHashingServiceTest {
 
     @Test
     public void hashingDuplicate() throws IOException {
-        byte[] text = textFile.readAllBytes();
-        byte[] image = imageFile.readAllBytes();
-
-        var textHashResult1 = fileHashingService.hashing(new MockMultipartFile("text", text));
-        var imageHashResult1 = fileHashingService.hashing(new MockMultipartFile("image", image));
+        var textHashResult1 = fileHashingService.hashing(new MockMultipartFile("text", new FileInputStream(textFile)));
+        var imageHashResult1 = fileHashingService.hashing(new MockMultipartFile("image",  new FileInputStream(imageFile)));
 
         assertFalse(textHashResult1.getFirst());
         assertFalse(imageHashResult1.getFirst());
 
-        var textHashResult2 = fileHashingService.hashing(new MockMultipartFile("text", text));
-        var imageHashResult2 = fileHashingService.hashing(new MockMultipartFile("image", image));
+        var textHashResult2 = fileHashingService.hashing(new MockMultipartFile("text", new FileInputStream(textFile)));
+        var imageHashResult2 = fileHashingService.hashing(new MockMultipartFile("image",  new FileInputStream(imageFile)));
 
         assertTrue(textHashResult2.getFirst());
         assertTrue(imageHashResult2.getFirst());
