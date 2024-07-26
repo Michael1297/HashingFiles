@@ -2,6 +2,7 @@ package com.michael1297.hashing_files.util;
 
 import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingInputStream;
+import com.google.common.io.ByteStreams;
 import com.michael1297.hashing_files.dto.FileHash;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -27,11 +28,9 @@ public class Hasher {
      */
     public static String toMd5(MultipartFile file){
         try (InputStream inputStream = file.getInputStream()) {
-            HashingInputStream hin = new HashingInputStream(Hashing.md5(), inputStream);
-            while (hin.read() != -1) {
-                // Do nothing. Reading all input stream to update hash.
-            }
-            return hin.hash().toString();
+            HashingInputStream his = new HashingInputStream(Hashing.md5(), inputStream);
+            ByteStreams.copy(his, ByteStreams.nullOutputStream());
+            return his.hash().toString();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -44,11 +43,9 @@ public class Hasher {
      */
     public static String toSha256(MultipartFile file) {
         try (InputStream inputStream = file.getInputStream()) {
-            HashingInputStream hin = new HashingInputStream(Hashing.sha256(), inputStream);
-            while (hin.read() != -1) {
-                // Do nothing. Reading all input stream to update hash.
-            }
-            return hin.hash().toString();
+            HashingInputStream his = new HashingInputStream(Hashing.sha256(), inputStream);
+            ByteStreams.copy(his, ByteStreams.nullOutputStream());
+            return his.hash().toString();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -61,11 +58,9 @@ public class Hasher {
      */
     public static String toSha512(MultipartFile file) {
         try (InputStream inputStream = file.getInputStream()) {
-            HashingInputStream hin = new HashingInputStream(Hashing.sha512(), inputStream);
-            while (hin.read() != -1) {
-                // Do nothing. Reading all input stream to update hash.
-            }
-            return hin.hash().toString();
+            HashingInputStream his = new HashingInputStream(Hashing.sha512(), inputStream);
+            ByteStreams.copy(his, ByteStreams.nullOutputStream());
+            return his.hash().toString();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

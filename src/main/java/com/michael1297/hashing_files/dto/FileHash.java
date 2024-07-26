@@ -1,5 +1,6 @@
 package com.michael1297.hashing_files.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class FileHash {
     private String md5;
     private String sha256;
