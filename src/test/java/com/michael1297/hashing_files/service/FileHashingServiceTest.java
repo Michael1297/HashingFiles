@@ -42,11 +42,11 @@ public class FileHashingServiceTest {
         var textHashResult = fileHashingService.hashing(new MockMultipartFile("text", new FileInputStream(textFile)));
         var imageHashResult = fileHashingService.hashing(new MockMultipartFile("image", new FileInputStream(imageFile)));
 
-        assertEquals(textHashResult.getSecond(), new FileHash(TEXT_MD5_HASH, TEXT_SHA256_HASH, TEXT_SHA512_HASH));
-        assertEquals(imageHashResult.getSecond(), new FileHash(IMAGE_MD5_HASH, IMAGE_SHA256_HASH, IMAGE_SHA512_HASH));
+        assertEquals(textHashResult.getFileHash(), new FileHash(TEXT_MD5_HASH, TEXT_SHA256_HASH, TEXT_SHA512_HASH));
+        assertEquals(imageHashResult.getFileHash(), new FileHash(IMAGE_MD5_HASH, IMAGE_SHA256_HASH, IMAGE_SHA512_HASH));
 
-        assertFalse(textHashResult.getFirst());
-        assertFalse(imageHashResult.getFirst());
+        assertFalse(textHashResult.isHashed());
+        assertFalse(imageHashResult.isHashed());
     }
 
     @Test
@@ -54,13 +54,13 @@ public class FileHashingServiceTest {
         var textHashResult1 = fileHashingService.hashing(new MockMultipartFile("text", new FileInputStream(textFile)));
         var imageHashResult1 = fileHashingService.hashing(new MockMultipartFile("image",  new FileInputStream(imageFile)));
 
-        assertFalse(textHashResult1.getFirst());
-        assertFalse(imageHashResult1.getFirst());
+        assertFalse(textHashResult1.isHashed());
+        assertFalse(imageHashResult1.isHashed());
 
         var textHashResult2 = fileHashingService.hashing(new MockMultipartFile("text", new FileInputStream(textFile)));
         var imageHashResult2 = fileHashingService.hashing(new MockMultipartFile("image",  new FileInputStream(imageFile)));
 
-        assertTrue(textHashResult2.getFirst());
-        assertTrue(imageHashResult2.getFirst());
+        assertTrue(textHashResult2.isHashed());
+        assertTrue(imageHashResult2.isHashed());
     }
 }

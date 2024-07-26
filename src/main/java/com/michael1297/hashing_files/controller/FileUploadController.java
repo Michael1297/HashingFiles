@@ -1,7 +1,7 @@
 package com.michael1297.hashing_files.controller;
 
 import com.michael1297.hashing_files.dto.FileHash;
-import com.michael1297.hashing_files.dto.Pair;
+import com.michael1297.hashing_files.dto.FileHashResult;
 import com.michael1297.hashing_files.service.FileHashingService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -34,10 +34,10 @@ public class FileUploadController {
     @PostMapping("/")
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
                                    Model model) {
-        Pair<Boolean, FileHash> hashPair = fileHashingService.hashing(file);
+        FileHashResult hash = fileHashingService.hashing(file);
 
-        model.addAttribute("error", hashPair.getFirst() ? "File is already hashed" : "");
-        model.addAttribute("hash", hashPair.getSecond());
+        model.addAttribute("error", hash.isHashed() ? "File is already hashed" : "");
+        model.addAttribute("hash", hash.getFileHash());
 
         return "uploadForm";
     }

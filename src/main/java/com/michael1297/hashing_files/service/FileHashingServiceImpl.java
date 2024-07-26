@@ -2,7 +2,7 @@ package com.michael1297.hashing_files.service;
 
 
 import com.michael1297.hashing_files.dto.FileHash;
-import com.michael1297.hashing_files.dto.Pair;
+import com.michael1297.hashing_files.dto.FileHashResult;
 import com.michael1297.hashing_files.util.Hasher;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,19 +18,17 @@ public class FileHashingServiceImpl implements FileHashingService {
     /**
      * Вычисление хешей для файла
      * @param file файл
-     * @return {@link Pair} где в качестве ключа используется {@link Boolean} для проверки, что файл уже был хэширован,
-     * а в качестве значения используется {@link FileHash} хеш файла
+     * @return {@link FileHashResult} используется для вывода результата хеширования
      */
     @Override
-    public Pair<Boolean, FileHash> hashing(MultipartFile file) {
+    public FileHashResult hashing(MultipartFile file) {
         FileHash fileHash = Hasher.getFileHash(file);
 
-        if(fileHashes.contains(fileHash)) {
-            return new Pair<>(true, fileHash);
-        } else {
-            fileHashes.add(fileHash);
-            return new Pair<>(false, fileHash);
-        }
+        FileHashResult result = new FileHashResult();
+        result.setFileHash(fileHash);
+        result.setHashed(fileHashes.contains(fileHash));
+        fileHashes.add(fileHash);
 
+        return result;
     }
 }
