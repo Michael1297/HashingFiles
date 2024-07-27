@@ -26,8 +26,7 @@ public class FileHashingServiceImpl implements FileHashingService {
 
         FileHashResult result = new FileHashResult();
         result.setFileHash(fileHash);
-        result.setHashed(fileHashes.contains(fileHash));
-        fileHashes.add(fileHash);
+        result.setHashed(!fileHashes.add(fileHash));
 
         return result;
     }
